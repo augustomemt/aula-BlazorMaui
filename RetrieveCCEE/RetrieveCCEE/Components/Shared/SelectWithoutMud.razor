@@ -1,0 +1,45 @@
+﻿@using Microsoft.AspNetCore.Components
+
+<div class="select-container">
+  <label>@Title</label>
+  <input type="text" placeholder="Pesquisar..." @bind="SearchText" class="search-input" />
+  <select multiple @onchange="OnSelectionChanged" class="custom-select">
+    @foreach (var item in FilteredItems)
+    {
+      <option value="@item" selected="@IsSelected(item)">@item</option>
+    }
+  </select>
+</div>
+
+@code {
+  // Parâmetros do componente
+  [Parameter]
+  public string Title { get; set; } = "Selecione";
+
+  [Parameter]
+  public IEnumerable<string> Items { get; set; } = Enumerable.Empty<string>();
+
+  [Parameter]
+  public IEnumerable<string> SelectedItems { get; set; } = new List<string>();
+
+  [Parameter]
+  public EventCallback<IEnumerable<string>> SelectedItemsChanged { get; set; }
+
+  // Variáveis internas
+  private string SearchText { get; set; } = string.Empty;
+  private List<string> _selectedItems = new();
+  private IEnumerable<string> FilteredItems => string.IsNullOrWhiteSpace(SearchText)
+      ? Items
+      : Items.Where(x => x.Contains(SearchText, StringComparison.OrdinalIgnoreCase));
+
+  // Função que verifica se o item está selecionado
+  private bool IsSelected(string item) => _selectedItems.Contains(item);
+
+  // Método chamado quando o usuário seleciona itens
+  private async Task OnSelectionChanged(ChangeEventArgs e)
+  {
+    var selectedOptions = ((string[])e.Value).ToList();
+    _selectedItems = selectedOptions;
+    await SelectedItemsChanged.InvokeAsync(_selectedItems);
+  }
+}

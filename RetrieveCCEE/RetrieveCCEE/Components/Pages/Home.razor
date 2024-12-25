@@ -1,0 +1,127 @@
+﻿@page "/"
+@layout MainLayout
+@using MudBlazor
+@using RetrieveCCEE.Application.Services
+@using RetrieveCCEE.Components.Layout
+@using RetrieveCCEE.Components.Shared
+@using RetrieveCCEE.Domain.Interfaces
+@inject IRetriveService RetriveService
+
+<MudGrid Justify="Justify.Center" Class="my-4">
+  
+  <MudItem xs="12" sm="11" md="10" lg="8">
+    <!-- Primeiro bloco: Filtros -->
+    <MudPaper Elevation="2" Class="p-4 mb-4">
+      <MudText Typo="Typo.h6" Class="mb-2">Filtros</MudText>
+      <MudDivider Class="mb-4" />
+      <MudGrid Spacing="3" AlignItems="Center">
+        <MudItem xs="12" sm="6" md="2">
+          <SelectGeneric Title="Tipo de Ponto"
+                         Items="typePoints"
+                         SelectedItems="selectedTypePoints"
+                         SelectedItemsChanged="OnTypePointsChanged" />
+        </MudItem>
+        <MudItem xs="12" sm="6" md="2">
+          <SelectGeneric Title="Ponto de Medição"
+                         Items="meterPoints"
+                         SelectedItems="selectedMeterPoints"
+                         SelectedItemsChanged="OnMeterPointsChanged" />
+        </MudItem>
+        <MudItem xs="12" sm="6" md="2">
+          <SelectGeneric Title="Ponto de Medição"
+                         Items="meters"
+                         SelectedItems="selectedMeters"
+                         SelectedItemsChanged="OnMeterPointsChanged" />
+        </MudItem>
+        <MudItem xs="12" sm="6" md="2">
+          <MudDatePicker Label="Data Inicial" @bind-Date="_startdate" />
+        </MudItem>
+        <MudItem xs="12" sm="6" md="2">
+          <MudDatePicker Label="Data Final" @bind-Date="_endate" />
+        </MudItem>
+        <MudItem xs="12" sm="6" md="2" Class="d-flex align-center justify-end">
+          <MudButton Variant="Variant.Filled" EndIcon="@Icons.Material.Filled.Send" Color="Color.Primary">
+            Gerar
+          </MudButton>
+        </MudItem>
+      </MudGrid>
+    </MudPaper>
+
+    <!-- Segundo bloco: Resultados -->
+    <MudPaper Elevation="2" Class="p-4">
+      <MudText Typo="Typo.h6" Class="mb-2">Resultados</MudText>
+      <MudDivider Class="mb-4" />
+      <Medidortable Data="_data" />
+    </MudPaper>
+  </MudItem>
+</MudGrid>
+
+
+@code {
+
+
+  private List<Domain.Models.Medidor> _data;
+  private DateTime? _startdate = new DateTime();
+  private DateTime? _endate = new DateTime();
+  private DateTime? startDate = DateTime.Now;
+  private DateTime? endDate = DateTime.Now.AddDays(1);
+
+  private string[] pontos = { "PA", "PB", "PC", "PD" };
+  private string[] medidores = { "A", "B", "C", "D" };
+  private string[] tipos = { "A", "B", "C", "D" };
+
+  private IEnumerable<string> typePoints = Enumerable.Empty<string>();
+  private IEnumerable<string> meterPoints = Enumerable.Empty<string>();
+  private IEnumerable<string> meters = Enumerable.Empty<string>();
+
+
+
+  private IEnumerable<string> selectedTypePoints = Enumerable.Empty<string>();
+  private IEnumerable<string> selectedMeterPoints = Enumerable.Empty<string>();
+  private IEnumerable<string> selectedMeters = Enumerable.Empty<string>();
+
+  protected override void OnInitialized()
+  {
+    //Inicia os Tipos de pontos
+    typePoints = RetriveService.GetAllTypePoints();
+
+    _data = new List<Domain.Models.Medidor>
+    {
+      new Domain.Models.Medidor("MGANJ-USINA10", "CGH-ANJOS.PRINCIPAL", DateTime.Parse("2024-10-28 12:05:00"), 0.00, 0.00, 35000.00),
+      new Domain.Models.Medidor("MGANJ-USINA11", "CGH-ANJOS.SECUNDARIA", DateTime.Parse("2024-10-28 13:05:00"), 10.00, 15.00, 25000.00),
+      new Domain.Models.Medidor("MGANJ-USINA12", "CGH-ANJOS.TERCIARIA", DateTime.Parse("2024-10-28 14:05:00"), 20.00, 30.00, 30000.00),     
+
+    };
+  }
+
+  // Método chamado quando o Tipo de Ponto muda
+  private async Task OnTypePointsChanged(IEnumerable<string> selectedItems)
+  {
+    selectedTypePoints = selectedItems;
+    await PointsBasedOnSelection(selectedItems);
+  }
+  // Função que carregas os Pontos de Medição baseados nos tipos
+  private Task PointsBasedOnSelection(IEnumerable<string> selectedItems)
+  {
+    meterPoints = RetriveService.GetAllMeterPoints(selectedItems.ToList());
+
+    return Task.CompletedTask;
+  }
+
+  // Método chamado quando o  Ponto de Medição muda
+  private async Task OnMeterPointsChanged(IEnumerable<string> selectedItems)
+  {
+    selectedMeterPoints = selectedItems;
+    await MetersBasedOnSelection(selectedItems);
+  }
+  // Função que carregas os Mediores baseados nos pontos
+  private Task MetersBasedOnSelection(IEnumerable<string> selectedItems)
+  {
+    meters = RetriveService.GetAllMeters(selectedItems.ToList()).Select(s => s.Name);
+
+    return Task.CompletedTask;
+  }
+  
+
+  
+}

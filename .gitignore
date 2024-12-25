@@ -1,0 +1,81 @@
+# Visual Studio
+.vs/
+.vscode/
+*.user
+*.suo
+*.sln.docstates
+
+# Build results
+bin/
+obj/
+out/
+
+# User-specific files
+*.rsuser
+*.userosscache
+*.sln.docstates
+
+# Logs
+*.log
+
+# NPM Packages
+node_modules/
+wwwroot/node_modules/
+
+# Dependency directories
+wwwroot/lib/
+
+# Publish outputs
+wwwroot/dist/
+dist/
+publish/
+*.publish/
+
+# ASP.NET Scaffolding
+ScaffoldingReadMe.txt
+
+# Configuration files
+appsettings.Development.json
+appsettings.Local.json
+appsettings.*.json
+secrets.json
+
+# Resharper
+_ReSharper*/
+*.DotSettings.user
+
+# JetBrains Rider
+.idea/
+*.sln.iml
+
+# Backup files
+*.bak
+*.swp
+*.sw~
+
+# Runtime generated files
+*.pid
+*.pid.lock
+*.log
+*.trace
+
+# IIS
+.vs/
+.config/
+
+# Blazor Specific
+wwwroot/css/app.css
+wwwroot/css/app.min.css
+wwwroot/js/site.js
+wwwroot/js/site.min.js
+
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
+ehthumbs.db
+desktop.ini
+
+# Linux
+*~

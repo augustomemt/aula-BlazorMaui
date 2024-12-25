@@ -1,0 +1,53 @@
+﻿@using MudBlazor
+
+<MudSelect MultiSelection="true"
+           @bind-SelectedValues="SelectedItems"
+           T="string"
+           Label="@Title"
+           AdornmentIcon="@Icons.Material.Filled.Search"
+           MenuMaxHeight="300px"
+           Search="true"
+           SearchFunc="@SearchItems">
+
+  @foreach (var item in Items)
+  {
+    <MudSelectItem T="string" Value="@item">@item</MudSelectItem>
+  }
+</MudSelect>
+
+@code {
+  // Função de busca personalizada
+  // Aqui, retornamos apenas os itens que sejam iguais ao texto digitado.
+  private IEnumerable<string> SearchItems(string text)
+  {
+    if (string.IsNullOrWhiteSpace(text))
+      return Items; // Se não houver texto digitado, retorna todos os itens.
+
+    return Items.Where(x => x.Equals(text, StringComparison.OrdinalIgnoreCase));
+  }
+
+  [Parameter]
+  public string Title { get; set; } = "Default Title";
+
+  [Parameter]
+  public IEnumerable<string> Items { get; set; } = Enumerable.Empty<string>();
+
+  private List<string> _selectedItems = new();
+
+  [Parameter]
+  public IEnumerable<string> SelectedItems
+  {
+    get => _selectedItems;
+    set
+    {
+      if (!_selectedItems.SequenceEqual(value))
+      {
+        _selectedItems = value.ToList();
+        SelectedItemsChanged.InvokeAsync(value);
+      }
+    }
+  }
+
+  [Parameter]
+  public EventCallback<IEnumerable<string>> SelectedItemsChanged { get; set; }
+}
