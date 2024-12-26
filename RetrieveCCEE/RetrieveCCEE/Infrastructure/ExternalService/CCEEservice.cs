@@ -86,7 +86,7 @@ namespace RetrieveCCEE.Infrastructure.ExternalService
 
             // Tenta extrair detalhes do Fault se a resposta for XML
             string faultDetails = TryExtractSoapFault(responseString);
-            Log.Error($"Erro: {response.StatusCode} - {faultDetails}");
+           
             return $"Erro: {response.StatusCode} - {faultDetails}";
           }
         }

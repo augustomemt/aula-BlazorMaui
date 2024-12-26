@@ -40,6 +40,7 @@ namespace RetrieveCCEE
       builder.Services.AddScoped<IRetriveService, RetriveService>();
       builder.Services.AddScoped<ISigeRepository, SigeRepository>();
       builder.Services.AddScoped<ICCEEService, CCEEservice>();
+      builder.Services.AddScoped<IConfigurationCCEE, ConfigurationRepository>();
 
       builder.Services.AddDbContext<SIGEContext>(options =>
         options.UseSqlServer(sigeConnectionString));
