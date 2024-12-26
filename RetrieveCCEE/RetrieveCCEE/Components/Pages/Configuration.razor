@@ -1,0 +1,99 @@
+﻿@page "/Configuration"
+@inject IDialogService DialogService
+@inject IConfigurationCCEE ConfigurationCCEE
+@using RetrieveCCEE.Components.Shared
+@using RetrieveCCEE.Domain.Entities
+@using MudBlazor
+@using RetrieveCCEE.Domain.Interfaces
+<MudGrid Justify="Justify.Center" Class="my-4">
+  <MudItem xs="12" sm="12" md="11" lg="10" xl="9">
+    <!-- Formulário de Configuração -->
+    <MudPaper Elevation="2" Class="p-4 mb-4">
+      <MudText Typo="Typo.h6" Class="mb-2">Gerenciar Configurações</MudText>
+      <MudDivider Class="mb-4" />
+
+      <MudForm @ref="form">
+        <!-- Caminho do Certificado -->
+        <MudTextField @bind-Value="configuration.CertificatePath" Label="Caminho do Certificado" Required="true"
+                      Immediate="true" />
+
+        <!-- Usuário -->
+        <MudTextField @bind-Value="configuration.Username" Label="Usuário" Required="true" Immediate="true" />
+
+        <!-- Senha -->
+        <MudTextField @bind-Value="configuration.Password" Label="Senha" Password="true" Required="true"
+                      InputType="InputType.Password" Immediate="true" />
+
+        <!-- Código do Agente -->
+        <MudTextField @bind-Value="configuration.CodAgent" Label="Código do Agente" Required="true" Immediate="true" />
+
+        <!-- Mensagem de erro -->
+        <MudText Color="Color.Error" Typo="Typo.body1" Class="mt-2">@errorMessage</MudText>
+
+        <!-- Botão Salvar -->
+        <MudButton OnClick="SaveConfigurationAsync" Variant="Variant.Filled" Color="Color.Primary" Class="mt-4">
+          Salvar Configuração
+        </MudButton>
+      </MudForm>
+    </MudPaper>
+  </MudItem>
+</MudGrid>
+
+
+
+@code {
+  private MudForm form;
+  private ConfigurationCCEE configuration = new();
+  private string errorMessage;  
+  protected override async Task OnInitializedAsync()
+  {
+    configuration = await ConfigurationCCEE.LoadConfigurationsAsync();
+  }
+
+  private async Task SaveConfigurationAsync()
+  {
+    await form.Validate(); // Valida todos os campos do formulário
+
+    if (form.IsValid)
+    {
+      try
+      {
+        await ConfigurationCCEE.SaveConfigurationsAsync(configuration);
+
+        var parameters = new DialogParameters<DialogBasic>
+        {
+            { x => x.ContentText, "Configuração salva com sucesso!" },
+            { x => x.ButtonText, "OK" },
+            { x => x.Color, Color.Success }
+        };
+
+        await DialogService.ShowAsync<DialogBasic>("Sucesso", parameters);
+        errorMessage = string.Empty; // Limpa mensagens de erro
+      }
+      catch(Exception ex)
+      {
+        var parameters = new DialogParameters<DialogBasic>
+        {
+            { x => x.ContentText, "Erro ao salvar!" },
+            { x => x.ButtonText, "OK" },
+            { x => x.Color, Color.Error }
+        };
+        await DialogService.ShowAsync<DialogBasic>("Error", parameters);
+      }
+
+    }
+    else
+    {
+      var parameters = new DialogParameters<DialogBasic>
+        {
+            { x => x.ContentText, "Por favor, preencha todos os campos obrigatórios corretamente." },
+            { x => x.ButtonText, "OK" },
+            { x => x.Color, Color.Error }
+        };
+      await DialogService.ShowAsync<DialogBasic>("O formulário possui campos inválidos.", parameters);
+     
+    }
+  }
+
+ 
+}

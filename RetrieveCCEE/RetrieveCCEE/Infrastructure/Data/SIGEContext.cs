@@ -12,7 +12,8 @@ namespace RetrieveCCEE.Infrastructure.Data
   {
      public SIGEContext(DbContextOptions<SIGEContext> options) : base(options) { }
 
-     public DbSet<vMeter> VMeter { get; set; }     
+     public DbSet<vMeter> VMeter { get; set; } 
+     public DbSet<ConfigurationCCEE> ConfigurationCCEE { get; set; }
      
 
 
