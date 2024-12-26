@@ -8,8 +8,8 @@
 @inject IRetriveService RetriveService
 
 <MudGrid Justify="Justify.Center" Class="my-4">
-  
-  <MudItem xs="12" sm="11" md="10" lg="8">
+
+  <MudItem xs="12" sm="12" md="11" lg="10" xl="9">
     <!-- Primeiro bloco: Filtros -->
     <MudPaper Elevation="2" Class="p-4 mb-4">
       <MudText Typo="Typo.h6" Class="mb-2">Filtros</MudText>
@@ -34,14 +34,14 @@
                          SelectedItemsChanged="OnMeterPointsChanged" />
         </MudItem>
         <MudItem xs="12" sm="6" md="2">
-          <MudDatePicker Label="Data Inicial" @bind-Date="_startdate" />
+          <MudDatePicker Label="Data Inicial" @bind-Date="_startdate" DateFormat="dd/MM/yyyy" />
         </MudItem>
         <MudItem xs="12" sm="6" md="2">
-          <MudDatePicker Label="Data Final" @bind-Date="_endate" />
+          <MudDatePicker Label="Data Final" @bind-Date="_endate" DateFormat="dd/MM/yyyy" />
         </MudItem>
         <MudItem xs="12" sm="6" md="2" Class="d-flex align-center justify-end">
           <MudButton Variant="Variant.Filled" EndIcon="@Icons.Material.Filled.Send" Color="Color.Primary">
-            Gerar
+            Buscar
           </MudButton>
         </MudItem>
       </MudGrid>
@@ -57,23 +57,19 @@
 </MudGrid>
 
 
+
 @code {
 
 
   private List<Domain.Models.Medidor> _data;
-  private DateTime? _startdate = new DateTime();
-  private DateTime? _endate = new DateTime();
+  private DateTime? _startdate = DateTime.Today;
+  private DateTime? _endate = DateTime.Today;
   private DateTime? startDate = DateTime.Now;
   private DateTime? endDate = DateTime.Now.AddDays(1);
-
-  private string[] pontos = { "PA", "PB", "PC", "PD" };
-  private string[] medidores = { "A", "B", "C", "D" };
-  private string[] tipos = { "A", "B", "C", "D" };
 
   private IEnumerable<string> typePoints = Enumerable.Empty<string>();
   private IEnumerable<string> meterPoints = Enumerable.Empty<string>();
   private IEnumerable<string> meters = Enumerable.Empty<string>();
-
 
 
   private IEnumerable<string> selectedTypePoints = Enumerable.Empty<string>();
@@ -87,13 +83,12 @@
 
     _data = new List<Domain.Models.Medidor>
     {
-      new Domain.Models.Medidor("MGANJ-USINA10", "CGH-ANJOS.PRINCIPAL", DateTime.Parse("2024-10-28 12:05:00"), 0.00, 0.00, 35000.00),
-      new Domain.Models.Medidor("MGANJ-USINA11", "CGH-ANJOS.SECUNDARIA", DateTime.Parse("2024-10-28 13:05:00"), 10.00, 15.00, 25000.00),
-      new Domain.Models.Medidor("MGANJ-USINA12", "CGH-ANJOS.TERCIARIA", DateTime.Parse("2024-10-28 14:05:00"), 20.00, 30.00, 30000.00),     
+      new Domain.Models.Medidor("MGANJ-USINA10", "CGH-ANJOS.PRINCIPAL", DateTime.Parse("2024-10-28 12:05:00"), 0.00, 0.00, 35000.00,40000),
+      new Domain.Models.Medidor("MGANJ-USINA11", "CGH-ANJOS.SECUNDARIA", DateTime.Parse("2024-10-28 13:05:00"), 10.00, 15.00, 25000.00,40000),
+      new Domain.Models.Medidor("MGANJ-USINA12", "CGH-ANJOS.TERCIARIA", DateTime.Parse("2024-10-28 14:05:00"), 20.00, 30.00, 30000.00,40000),     
 
     };
   }
-
   // Método chamado quando o Tipo de Ponto muda
   private async Task OnTypePointsChanged(IEnumerable<string> selectedItems)
   {

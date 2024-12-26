@@ -86,17 +86,46 @@ h1:focus {
 }
 
 @supports (-webkit-touch-callout: none) {
-    .status-bar-safe-area {
-        display: flex;
-        position: sticky;
-        top: 0;
-        height: env(safe-area-inset-top);
-        background-color: #f7f7f7;
-        width: 100%;
-        z-index: 1;
-    }
+  .status-bar-safe-area {
+    display: flex;
+    position: sticky;
+    top: 0;
+    height: env(safe-area-inset-top);
+    background-color: #f7f7f7;
+    width: 100%;
+    z-index: 1;
+  }
 
-    .flex-column, .navbar-brand {
-        padding-left: env(safe-area-inset-left);
+  .flex-column, .navbar-brand {
+    padding-left: env(safe-area-inset-left);
+  }
+  /* Estilo para a sidebar */
+  .sidebar-custom {
+    background-color: #1e1e2f; /* Cor de fundo personalizada */
+    color: #ffffff; /* Texto branco */
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2); /* Sombra para dar destaque */
+    width: 250px; /* Largura da sidebar */
+  }
+  /* Estilo para os links */
+  .sidebar-link {
+    color: #ffffff !important; /* Cor do texto dos links */
+    padding: 10px 20px; /* Espaçamento interno */
+    margin: 5px 0; /* Espaçamento entre links */
+    border-radius: 8px; /* Cantos arredondados */
+    transition: background-color 0.3s ease; /* Animação suave */
+  }
+    /* Hover nos links */
+    .sidebar-link:hover {
+      background-color: #4a4a6a; /* Cor de fundo ao passar o mouse */
+      color: #ffffff !important; /* Cor do texto ao passar o mouse */
+    }
+    /* Ícones */
+    .sidebar-link .mud-icon {
+      margin-right: 8px; /* Espaço entre o ícone e o texto */
+      font-size: 1.2rem; /* Tamanho do ícone */
+    }
+    /* Tamanho do texto */
+    .sidebar-link .mud-nav-link-text {
+      font-size: 1rem; /* Tamanho do texto dos links */
     }
 }

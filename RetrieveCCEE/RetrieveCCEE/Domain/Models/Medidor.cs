@@ -14,7 +14,8 @@ namespace RetrieveCCEE.Domain.Models
     public double EnergiaAtivaConsumo { get; set; }
     public double EnergiaAtivaGeracao { get; set; }
     public double EnergiaReativaGeracao { get; set; }
-    public Medidor(string cod, string nome, DateTime data, double ativaConsumo, double ativaGeracao, double reativaGeracao)
+    public double EnergiaReativaConsumo { get; set; }
+    public Medidor(string cod, string nome, DateTime data, double ativaConsumo, double ativaGeracao, double reativaGeracao, double reativaConsumo)
     {
       CodMedidor = cod;
       NomeMedidor = nome;
@@ -22,6 +23,7 @@ namespace RetrieveCCEE.Domain.Models
       EnergiaAtivaConsumo = ativaConsumo;
       EnergiaAtivaGeracao = ativaGeracao;
       EnergiaReativaGeracao = reativaGeracao;
+      EnergiaReativaConsumo = reativaConsumo;
     }
   }
 }

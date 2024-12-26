@@ -4,20 +4,22 @@
 
 <MudTable Items="Data" Hover="true" Striped="true" Breakpoint="Breakpoint.Sm" T="Medidor">
   <HeaderContent>
-    <MudTh>Cód Medidor</MudTh>
+    <MudTh>Código Medidor</MudTh>
     <MudTh>Nome Medidor</MudTh>
     <MudTh>Data de Referência</MudTh>
     <MudTh>Energia Ativa Consumo</MudTh>
     <MudTh>Energia Ativa Geração</MudTh>
     <MudTh>Energia Reativa Geração</MudTh>
+    <MudTh>Energia Reativa Consumo</MudTh>
   </HeaderContent>
   <RowTemplate>
-    <MudTd DataLabel="Cód Medidor">@context.CodMedidor</MudTd>
+    <MudTd DataLabel="Codigo do Medidor">@context.CodMedidor</MudTd>
     <MudTd DataLabel="Nome Medidor">@context.NomeMedidor</MudTd>
     <MudTd DataLabel="Data de Referência">@context.DataReferencia.ToString("dd/MM/yyyy HH:mm:ss")</MudTd>
     <MudTd DataLabel="Energia Ativa Consumo">@context.EnergiaAtivaConsumo</MudTd>
     <MudTd DataLabel="Energia Ativa Geração">@context.EnergiaAtivaGeracao</MudTd>
-    <MudTd DataLabel="Energia Reativa Geração">@context.EnergiaReativaGeracao</MudTd>
+    <MudTd DataLabel="Energia Reativa Consumo">@context.EnergiaReativaGeracao</MudTd>
+    <MudTd DataLabel="Energia Reativa Geração">@context.EnergiaReativaConsumo</MudTd>
   </RowTemplate>
   <PagerContent>
     <MudTablePager PageSizeOptions="new int[] { 5, 10, 20 }" />

@@ -5,6 +5,7 @@ using MudBlazor.Services;
 using RetrieveCCEE.Application.Services;
 using RetrieveCCEE.Domain.Interfaces;
 using RetrieveCCEE.Infrastructure.Data;
+using RetrieveCCEE.Infrastructure.ExternalService;
 using RetrieveCCEE.Infrastructure.Repository;
 
 namespace RetrieveCCEE
@@ -36,9 +37,9 @@ namespace RetrieveCCEE
       var ionDataConnectionString = config.GetConnectionString("SIGE_DataBase");
 
 
-
       builder.Services.AddScoped<IRetriveService, RetriveService>();
       builder.Services.AddScoped<ISigeRepository, SigeRepository>();
+      builder.Services.AddScoped<ICCEEService, CCEEservice>();
 
       builder.Services.AddDbContext<SIGEContext>(options =>
         options.UseSqlServer(sigeConnectionString));
