@@ -46,6 +46,7 @@ h1:focus {
 .custom-appbar {
   background-color: #EEEFF2; /* Cor desejada */
   color: #003E86; /* Cor do texto */
+  font-weight: bold; /* Negrito para o texto */
 }
 .custom-sidebar {
   background-color: #001136; /* Cor desejada */
