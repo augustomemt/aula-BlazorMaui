@@ -47,12 +47,13 @@
       </MudGrid>
     </MudPaper>
 
+    @if (_data != null && _data.Any())
+    {
     <!-- Segundo bloco: Resultados -->
-    <MudPaper Elevation="2" Class="p-4">
-      <MudText Typo="Typo.h6" Class="mb-2">Resultados</MudText>
-      <MudDivider Class="mb-4" />
+    <MudPaper Elevation="2" Class="p-4">      
       <Medidortable Data="_data" />
     </MudPaper>
+    }
   </MudItem>
 </MudGrid>
 

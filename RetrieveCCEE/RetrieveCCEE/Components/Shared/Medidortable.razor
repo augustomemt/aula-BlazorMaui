@@ -2,11 +2,16 @@
 @using MudBlazor
 
 
-<MudTable Items="Data" Hover="true" Striped="true" Breakpoint="Breakpoint.Sm" T="Medidor">
+<MudTable Items="Data" Hover="true" Striped="true" Breakpoint="Breakpoint.Sm" T="Medidor" Filter="new Func<Medidor,bool>(FilterFunc1)" >
+  <ToolBarContent>
+    <MudText Typo="Typo.h6">Resultados</MudText>
+    <MudSpacer />
+    <MudTextField @bind-Value="searchString1" Placeholder="Search" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+  </ToolBarContent>
   <HeaderContent>
-    <MudTh>Código Medidor</MudTh>
-    <MudTh>Nome Medidor</MudTh>
-    <MudTh>Data de Referência</MudTh>
+    <MudTh><MudTableSortLabel SortBy="new Func<Medidor, object>(x=>x.CodMedidor)">Código Medidor</MudTableSortLabel></MudTh>
+    <MudTh><MudTableSortLabel SortBy="new Func<Medidor, object>(x=>x.NomeMedidor)">Nome Medidor</MudTableSortLabel></MudTh>
+    <MudTh><MudTableSortLabel SortBy="new Func<Medidor, object>(x=>x.DataReferencia)">Data de Referência</MudTableSortLabel></MudTh>
     <MudTh>Energia Ativa Consumo</MudTh>
     <MudTh>Energia Ativa Geração</MudTh>
     <MudTh>Energia Reativa Geração</MudTh>
@@ -30,9 +35,26 @@
   [Parameter]
   public List<Medidor> Data { get; set; } = new();
 
+  private string searchString1 = "";
+
   protected override void OnInitialized()
   {
     
     Data ??= new List<Medidor>();
+  }
+
+  private bool FilterFunc1(Medidor element) => FilterFunc(element, searchString1);
+
+  private bool FilterFunc(Medidor element, string searchString)
+  {
+    if (string.IsNullOrWhiteSpace(searchString))
+      return true;
+    if (element.CodMedidor.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+      return true;
+    if (element.DataReferencia.ToString().Contains(searchString, StringComparison.OrdinalIgnoreCase))
+      return true; 
+    if (element.NomeMedidor.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+      return true;
+    return false;
   }
 }

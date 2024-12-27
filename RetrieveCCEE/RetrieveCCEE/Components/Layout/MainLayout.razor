@@ -8,20 +8,20 @@
 
 
  <MudLayout>
-  <MudAppBar Color="Color.Primary">
-    
-    
+  <MudAppBar Class="custom-appbar">
     <!-- Botão de menu que controla a sidebar -->
     <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit"  OnClick="ToggleDrawer" />
-
     <MudText Typo="Typo.h6">Listar Medidas CCEE</MudText>
   </MudAppBar>
 
-  <MudDrawer @bind-Open="_drawerOpen" Variant="DrawerVariant.Responsive" Class="pa-2" Color="Color.Default">
-    <MudNavMenu>
-      <MudNavLink Icon="@Icons.Material.Filled.Home" Href="" Match="NavLinkMatch.All">Home</MudNavLink>
-      <MudNavLink Icon="@Icons.Material.Filled.History" Href="counter">System Log</MudNavLink>
-      <MudNavLink Icon="@Icons.Material.Filled.Settings" Href="Configuration">Configuration</MudNavLink>
+  <MudDrawer @bind-Open="_drawerOpen" Variant="DrawerVariant.Responsive" Class="pa-2 custom-sidebar">
+    <MudDrawerHeader >
+      <img src="/LOGO-METRUM-BRANCO-SVG.svg" width="120px" class="justify-content-center" />
+    </MudDrawerHeader>
+    <MudNavMenu Class="custom-navmenu" Color="Color.Info">
+      <MudNavLink IconColor="Color.Info" Icon="@Icons.Material.Filled.ElectricMeter" Href="" Match="NavLinkMatch.All">Home</MudNavLink>
+      <MudNavLink IconColor="Color.Info" Icon="@Icons.Material.Filled.History" Href="counter">System Log</MudNavLink>
+      <MudNavLink IconColor="Color.Info" Icon="@Icons.Material.Filled.Settings" Href="Configuration">Configuration</MudNavLink>
     </MudNavMenu>
   </MudDrawer>
 

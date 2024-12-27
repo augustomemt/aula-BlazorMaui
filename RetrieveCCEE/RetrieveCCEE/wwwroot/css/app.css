@@ -43,7 +43,24 @@ h1:focus {
 .valid.modified:not([type=checkbox]) {
     outline: 1px solid #26b050;
 }
+.custom-appbar {
+  background-color: #EEEFF2; /* Cor desejada */
+  color: #003E86; /* Cor do texto */
+}
+.custom-sidebar {
+  background-color: #001136; /* Cor desejada */
+  color: white; /* Cor do texto */
+}
+/* Estilo para o MudNavMenu */
+.custom-navmenu .mud-nav-link {
+  
+  text-decoration: none !important; /* Remove o sublinhado */
+}
 
+  /* Estilo para os ícones */
+  .custom-navmenu .mud-nav-link .mud-icon {
+    color: white !important; /* Cor branca para os ícones */
+  }
 .invalid {
     outline: 1px solid #e50000;
 }
