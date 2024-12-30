@@ -8,11 +8,9 @@
 @inject IRetriveService RetriveService
 
 <MudGrid Justify="Justify.Center" Class="my-4">
-
   <MudItem xs="12" sm="12" md="11" lg="10" xl="9">
     <!-- Primeiro bloco: Filtros -->
     <MudPaper Elevation="2" Class="p-4 mb-4">
-
       <MudText Typo="Typo.h6" Class="mb-2">Listar Medidas</MudText>
       <MudDivider Class="mb-4" />
       <MudGrid Spacing="3" AlignItems="Center">
@@ -41,84 +39,110 @@
           <MudDatePicker Label="Data Final" @bind-Date="_endate" DateFormat="dd/MM/yyyy" />
         </MudItem>
         <MudItem xs="12" sm="6" md="2" Class="d-flex align-center justify-end">
-          <MudButton Variant="Variant.Filled" EndIcon="@Icons.Material.Filled.Send" Color="Color.Primary">
-            Buscar
-          </MudButton>
+          @if (!isLoading)
+          {
+            <MudButton Variant="Variant.Filled" EndIcon="@Icons.Material.Filled.Send" Color="Color.Primary" OnClick="LoadData">
+              Buscar
+            </MudButton>
+          }
+          else
+          {
+            <MudButton Variant="Variant.Outlined" EndIcon="@Icons.Material.Filled.Stop" Color="Color.Default" OnClick="LoadData">
+              Parar
+            </MudButton>
+          }
         </MudItem>
       </MudGrid>
     </MudPaper>
 
-    @if (_data != null && _data.Any())
+    @if (isLoading)
     {
-    <!-- Segundo bloco: Resultados -->
-    <MudPaper Elevation="2" Class="p-4">      
-      <Medidortable Data="_data" />
-    </MudPaper>
+      <ProgressBar progressValue="@progressValue" />
+      <MudSkeleton Animation="Animation.Wave" />
+      <MudSkeleton Animation="Animation.Wave" SkeletonType="SkeletonType.Rectangle" Height="300px" />
+    }
+
+    @if (showTable)
+    {
+      <!-- Segundo bloco: Resultados -->
+      <MudPaper Elevation="2" Class="p-4">
+        <Medidortable Data="_data" />
+      </MudPaper>
     }
   </MudItem>
 </MudGrid>
 
-
-
 @code {
-
-
   private List<Domain.Models.Medidor> _data;
   private DateTime? _startdate = DateTime.Today;
   private DateTime? _endate = DateTime.Today;
-  private DateTime? startDate = DateTime.Now;
-  private DateTime? endDate = DateTime.Now.AddDays(1);
 
   private IEnumerable<string> typePoints = Enumerable.Empty<string>();
   private IEnumerable<string> meterPoints = Enumerable.Empty<string>();
   private IEnumerable<string> meters = Enumerable.Empty<string>();
 
-
   private IEnumerable<string> selectedTypePoints = Enumerable.Empty<string>();
   private IEnumerable<string> selectedMeterPoints = Enumerable.Empty<string>();
   private IEnumerable<string> selectedMeters = Enumerable.Empty<string>();
 
+  private bool isLoading = false;
+  private bool showTable = false;
+  private string progressValue = "0%"; // Valor inicial como string
+
   protected override void OnInitialized()
   {
-    //Inicia os Tipos de pontos
+    // Inicia os Tipos de pontos
     typePoints = RetriveService.GetAllTypePoints();
 
     _data = new List<Domain.Models.Medidor>
     {
-      new Domain.Models.Medidor("MGANJ-USINA10", "CGH-ANJOS.PRINCIPAL", DateTime.Parse("2024-10-28 12:05:00"), 0.00, 0.00, 35000.00,40000),
-      new Domain.Models.Medidor("MGANJ-USINA11", "CGH-ANJOS.SECUNDARIA", DateTime.Parse("2024-10-28 13:05:00"), 10.00, 15.00, 25000.00,40000),
-      new Domain.Models.Medidor("MGANJ-USINA12", "CGH-ANJOS.TERCIARIA", DateTime.Parse("2024-10-28 14:05:00"), 20.00, 30.00, 30000.00,40000),     
-
+      new Domain.Models.Medidor("MGANJ-USINA10", "CGH-ANJOS.PRINCIPAL", DateTime.Parse("2024-10-28 12:05:00"), 0.00, 0.00, 35000.00, 40000),
+      new Domain.Models.Medidor("MGANJ-USINA11", "CGH-ANJOS.SECUNDARIA", DateTime.Parse("2024-10-28 13:05:00"), 10.00, 15.00, 25000.00, 40000),
+      new Domain.Models.Medidor("MGANJ-USINA12", "CGH-ANJOS.TERCIARIA", DateTime.Parse("2024-10-28 14:05:00"), 20.00, 30.00, 30000.00, 40000)
     };
   }
-  // Método chamado quando o Tipo de Ponto muda
+
+  private async Task LoadData()
+  {
+    isLoading = true;
+    showTable = false;
+    progressValue = "0%";
+
+    // Simulação de carregamento
+    for (int i = 1; i <= 100; i++)
+    {
+      progressValue = $"{i}%";
+      StateHasChanged();
+      await Task.Delay(20); // Simula o tempo de carregamento
+    }
+
+    isLoading = false;
+    showTable = true;
+  }
+
   private async Task OnTypePointsChanged(IEnumerable<string> selectedItems)
   {
     selectedTypePoints = selectedItems;
     await PointsBasedOnSelection(selectedItems);
   }
-  // Função que carregas os Pontos de Medição baseados nos tipos
+
   private Task PointsBasedOnSelection(IEnumerable<string> selectedItems)
   {
     meterPoints = RetriveService.GetAllMeterPoints(selectedItems.ToList());
-
     return Task.CompletedTask;
   }
 
-  // Método chamado quando o  Ponto de Medição muda
   private async Task OnMeterPointsChanged(IEnumerable<string> selectedItems)
   {
     selectedMeterPoints = selectedItems;
     await MetersBasedOnSelection(selectedItems);
   }
-  // Função que carregas os Mediores baseados nos pontos
+
   private Task MetersBasedOnSelection(IEnumerable<string> selectedItems)
   {
     meters = RetriveService.GetAllMeters(selectedItems.ToList()).Select(s => s.Name);
-
     return Task.CompletedTask;
   }
-  
 
-  
+ 
 }

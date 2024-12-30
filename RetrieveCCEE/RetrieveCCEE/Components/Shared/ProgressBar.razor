@@ -1,0 +1,36 @@
+﻿
+<MudProgressLinear Value="@GetProgressValueAsDouble(progressValue)" Color="Color.Info" Size="Size.Large" Class="my-4">
+  <MudText Typo="Typo.subtitle1" Align="Align.Center">
+    <b>@progressValue</b>
+  </MudText>
+</MudProgressLinear>
+
+
+@code {
+  [Parameter]
+  public string progressValue { get; set; } = "0%"; // Valor inicial como string
+
+  // Método para converter a string em um valor numérico (double)
+  private double GetProgressValueAsDouble(string value)
+  {
+    if (double.TryParse(value.TrimEnd('%'), out double numericValue))
+    {
+      return numericValue; // Retorna o valor numérico (sem o %)
+    }
+    return 0; // Valor padrão caso a conversão falhe
+  }
+}
+<style>
+  .progress-container {
+    position: relative;
+    width: 100%; /* Ajuste conforme necessário */
+  }
+
+  .progress-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: black; /* Cor do texto sobre a barra */
+  }
+</style>
